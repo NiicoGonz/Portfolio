@@ -1,28 +1,28 @@
-import { BrowserRouter } from "react-router-dom"
-import StarsCanvas from "./components"
+import { BrowserRouter } from "react-router-dom";
 
-function App() {
+import { About, Contact, Experience, Feedbacks, Hero, Navbar, Skills, Works, StarsCanvas } from "./components";
 
+const App = () => {
   return (
-      <BrowserRouter>
-      <div className="relative z-0 bg-primary">
-        <StarsCanvas/>
-        <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
-              {/* <Navbar />
-              <Hero /> */}
+    <BrowserRouter>
+      <div className='relative z-0 bg-primary'>
+          <StarsCanvas />
 
+        <div >
+          <Navbar />
+          <Hero />
         </div>
-        {/* <About />
+        <About />
         <Experience />
         <Skills />
         <Works />
-        <Feedbacks /> */}
-         <div className="relative z-0">
-          {/* <Contact /> */}
-          </div>     
+        {/* <Feedbacks /> */}
+        <div className='relative z-0'>
+          <Contact />
+        </div>
       </div>
-      </BrowserRouter>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
