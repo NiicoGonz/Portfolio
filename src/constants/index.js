@@ -1,4 +1,3 @@
-import { color } from "framer-motion";
 import {
   mobile,
   backend,
@@ -8,10 +7,20 @@ import {
   css,
   Heinsohn,
   celuweb,
-  assist,
   postobon,
   postobonB2C,
   assed,
+  Angular,
+  React,
+  Node,
+  Nest,
+  Docker,
+  Git,
+  Mongo,
+  Postgres,
+  Python,
+  Ts,
+  js,
 } from "../assets";
 
 export const navLinks = [
@@ -31,7 +40,6 @@ export const navLinks = [
     id: "contact",
     title: "Contacto",
   },
-  
 ];
 
 const services = [
@@ -62,8 +70,50 @@ const technologies = [
     name: "CSS 3",
     icon: css,
   },
-  
-
+  {
+    name: "Javascritp",
+    icon: js,
+  },
+  {
+    name: "Angular",
+    icon: Angular,
+  },
+  {
+    name: "React",
+    icon: React,
+  },
+  {
+    name: "Nodejs",
+    icon: Node,
+  },
+  {
+    name: "Nest",
+    icon: Nest,
+  },
+  {
+    name: "Docker",
+    icon: Docker,
+  },
+  {
+    name: "Git",
+    icon: Git,
+  },
+  {
+    name: "Mongo",
+    icon: Mongo,
+  },
+  {
+    name: "Postgres",
+    icon: Postgres,
+  },
+  {
+    name: "Python",
+    icon: Python,
+  },
+  {
+    name: "Typescript",
+    icon: Ts,
+  },
 ];
 
 const experiences = [
@@ -104,7 +154,6 @@ const testimonials = [
     company: "Acme Co",
     image: "",
   },
-  
 ];
 
 const projects = [
@@ -115,7 +164,7 @@ const projects = [
     tags: [
       {
         name: "Nest.js",
-        color: "red-text-gradient", 
+        color: "red-text-gradient",
       },
       {
         name: "Mongo",
@@ -123,8 +172,8 @@ const projects = [
       },
       {
         name: "Next.js",
-        color: "blue-text-gradient"
-      }
+        color: "blue-text-gradient",
+      },
     ],
     image: assed,
     // source_code_link: "https://github.com/",
@@ -145,7 +194,7 @@ const projects = [
       {
         name: "Sql",
         color: "white-text-gradient",
-      }
+      },
     ],
     image: postobon,
     // source_code_link: "https://github.com/",
@@ -166,12 +215,11 @@ const projects = [
       {
         name: "Sql",
         color: "white-text-gradient",
-      }
+      },
     ],
     image: postobonB2C,
     // source_code_link: "https://github.com/",
-  }
-  
+  },
 ];
 
 export { services, technologies, experiences, testimonials, projects };
