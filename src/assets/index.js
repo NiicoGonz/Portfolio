@@ -20,7 +20,40 @@ import jobit from "./jobit.png";
 import assed from "./assed.png";
 import postobon from "./postobonB2B.png";
 import postobonB2C from "./postobonb2c.png";
+import js from "./skills/js.svg";
+import Angular from "./skills/angular.svg";
+import Docker from "./skills/docker.svg";
+import Git from "./skills/git.svg";
+import Mongo from "./skills/mongo.svg";
+import Nest from "./skills/nestjs.svg";
+import Node from "./skills/nodejs.svg";
+import Postgres from "./skills/postgres.svg";
+import Python from "./skills/python.svg";
+import React from "./skills/react.svg";
+import Ts from "./skills/ts.svg";
+
+
+
+
+
+
+
+
+
+
+
 export {
+  js,
+  Angular,
+  Docker,
+  Git,
+  Mongo,
+  Nest,
+  Node,
+  Postgres,
+  Python,
+  React,
+  Ts,
   postobonB2C,
   postobon,
   assist,
