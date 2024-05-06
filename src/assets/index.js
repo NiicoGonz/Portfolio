@@ -14,12 +14,16 @@ import nodejs from "./skills/nodejs.svg";
 import redux from "./skills/redux.svg";
 import Heinsohn from "./company/Heinsohn.png"
 import celuweb from "./company/celuweb.png"
-
+import assist from "./asist.png"
 import carrent from "./carrent.png";
 import jobit from "./jobit.png";
-import tripguide from "./tripguide.png";
-
+import assed from "./assed.png";
+import postobon from "./postobonB2B.png";
+import postobonB2C from "./postobonb2c.png";
 export {
+  postobonB2C,
+  postobon,
+  assist,
   Heinsohn,
   celuweb,
   logo,
@@ -38,5 +42,5 @@ export {
   redux,
   carrent,
   jobit,
-  tripguide,
+  assed,
 };

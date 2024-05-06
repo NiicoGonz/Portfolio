@@ -32,19 +32,24 @@ const ProjectCard = ({
             alt="project_image"
             className="w-full h-full object-cover rounded-2xl"
           />
-
-          <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
-            <div
-              onClick={() => window.open(source_code_link, "_blank")}
-              className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
-            >
-              <img
-                src={github}
-                alt="source code"
-                className="w-1/2 h-1/2 object-contain"
-              />
+          {source_code_link ? (
+            <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
+              <div
+                onClick={() =>
+                  source_code_link != null
+                    ? window.open(source_code_link, "_blank")
+                    : ""
+                }
+                className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+              >
+                <img
+                  src={github}
+                  alt="source code"
+                  className="w-1/2 h-1/2 object-contain"
+                />
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
 
         <div className="mt-5">
@@ -69,15 +74,15 @@ const ProjectCard = ({
 
 const Works = () => {
   return (
-    <div id={"projects"} 
-    variants={staggerContainer()}
-    initial='hidden'
-    whileInView='show'
-    viewport={{ once: true, amount: 0.25 }}
-    className={`${styles.padding} max-w-7xl m`}
+    <div
+      id={"projects"}
+      variants={staggerContainer()}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.25 }}
     >
-      <motion.div variants={textVariant()} >
-        <h2  className={`${styles.sectionHeadText}`}>Mis proyectos.</h2>
+      <motion.div variants={textVariant()}>
+        <h2 className={`${styles.sectionHeadText}`}>Mis proyectos.</h2>
       </motion.div>
 
       <div id={"projects"} className="w-full flex">
@@ -94,14 +99,14 @@ const Works = () => {
         </motion.p>
       </div>
 
-      <div  className="mt-20 flex flex-wrap gap-7">
+      <div className="mt-20 flex flex-wrap gap-7">
         {projects.map((project, index) => (
-          <ProjectCard  key={`project-${index}`} index={index} {...project} />
+          <ProjectCard key={`project-${index}`} index={index} {...project} />
         ))}
       </div>
     </div>
   );
 };
 
-SectionWrapper(ProjectCard, "projects")
+SectionWrapper(ProjectCard, "projects");
 export default SectionWrapper(Works, "");

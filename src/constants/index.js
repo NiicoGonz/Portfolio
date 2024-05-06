@@ -1,3 +1,4 @@
+import { color } from "framer-motion";
 import {
   mobile,
   backend,
@@ -6,7 +7,11 @@ import {
   html,
   css,
   Heinsohn,
-  celuweb
+  celuweb,
+  assist,
+  postobon,
+  postobonB2C,
+  assed,
 } from "../assets";
 
 export const navLinks = [
@@ -104,26 +109,68 @@ const testimonials = [
 
 const projects = [
   {
-    name: "Car Rent",
+    name: "Assed ",
     description:
-      "Web-based platform that allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.",
+      "Proyecto desarrollado como freelance para la construccion de la api en un modelo de negocio SAS ",
     tags: [
       {
-        name: "react",
-        color: "blue-text-gradient",
+        name: "Nest.js",
+        color: "red-text-gradient", 
       },
       {
-        name: "mongodb",
+        name: "Mongo",
         color: "green-text-gradient",
       },
       {
-        name: "tailwind",
-        color: "pink-text-gradient",
-      },
+        name: "Next.js",
+        color: "blue-text-gradient"
+      }
     ],
-    image: "",
-    source_code_link: "https://github.com/",
+    image: assed,
+    // source_code_link: "https://github.com/",
   },
+  {
+    name: "B2B Negocios ",
+    description:
+      "Proyecto desarrollado en Celuweb para el cliente Postobon, donde se construye un modelo B2B",
+    tags: [
+      {
+        name: "React",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "C#",
+        color: "green-text-gradient",
+      },
+      {
+        name: "Sql",
+        color: "white-text-gradient",
+      }
+    ],
+    image: postobon,
+    // source_code_link: "https://github.com/",
+  },
+  {
+    name: "B2C Hogares ",
+    description:
+      "Proyecto desarrollado en Celuweb para el cliente Postobon, donde se construye un modelo B2C",
+    tags: [
+      {
+        name: "React",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "C#",
+        color: "green-text-gradient",
+      },
+      {
+        name: "Sql",
+        color: "white-text-gradient",
+      }
+    ],
+    image: postobonB2C,
+    // source_code_link: "https://github.com/",
+  }
   
 ];
 
