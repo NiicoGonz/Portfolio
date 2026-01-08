@@ -9,14 +9,14 @@ const Stars = () => {
 
   useEffect(() => {
     const generateSphere = () => {
-      const positions = random.inSphere(new Float32Array(5000), { radius: 1.2 });
+      const positions = random.inSphere(new Float32Array(2000), { radius: 1.2 });
       if (positions.some(pos => isNaN(pos))) {
         generateSphere();
       } else {
         setSphere(positions);
       }
     };
-    
+
     generateSphere();
   }, []);
 
@@ -49,7 +49,7 @@ const Stars = () => {
 const StarsCanvas = () => {
   return (
     <div className='w-full h-auto absolute inset-0 z-[-1]'>
-      <Canvas camera={{ position: [0, 0, 1] }}>
+      <Canvas camera={{ position: [0, 0, 1] }} frameloop="always">
         <Suspense fallback={null}>
           <Stars />
         </Suspense>

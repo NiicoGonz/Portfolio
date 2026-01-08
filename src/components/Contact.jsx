@@ -72,57 +72,131 @@ const Contact = () => {
     >
       <motion.div
         variants={slideIn("left", "tween", 0.2, 1)}
-        className='flex-[0.75] bg-black-100 p-8 rounded-2xl'
+        className='flex-[0.75] p-8 rounded-3xl relative group'
+        style={{
+          background: "linear-gradient(135deg, rgba(145, 94, 255, 0.1), rgba(10, 10, 35, 0.8))",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(145, 94, 255, 0.3)",
+          boxShadow: "0 8px 32px 0 rgba(145, 94, 255, 0.2)",
+        }}
       >
-        <p className={styles.sectionSubText}>Ponte en contacto</p>
-        <h3 className={styles.sectionHeadText}>Contacto.</h3>
+        {/* Glow effect */}
+        <div
+          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at top left, rgba(145, 94, 255, 0.4), transparent 70%)",
+          }}
+        />
 
-        <form
-          ref={formRef}
-          onSubmit={handleSubmit}
-          className='mt-12 flex flex-col gap-8'
-        >
-          <label className='flex flex-col'>
-            <span className='text-white font-medium mb-4'>Nombre</span>
-            <input
-              type='text'
-              name='name'
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Nombre completo"
-              className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
-            />
-          </label>
-          <label className='flex flex-col'>
-            <span className='text-white font-medium mb-4'>Email</span>
-            <input
-              type='email'
-              name='email'
-              value={form.email}
-              onChange={handleChange}
-              placeholder="PruebaEmail@dominio.com"
-              className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
-            />
-          </label>
-          <label className='flex flex-col'>
-            <span className='text-white font-medium mb-4'>Mensaje</span>
-            <textarea
-              rows={7}
-              name='message'
-              value={form.message}
-              onChange={handleChange}
-              placeholder='Ejemplo: Hola buenos días, me gustaria contactar contigo para solicitar información '
-              className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
-            />
-          </label>
+        <div className="relative z-10">
+          <p className={styles.sectionSubText}>Ponte en contacto</p>
+          <h3 className={styles.sectionHeadText}>Contacto.</h3>
 
-          <button
-            type='submit'
-            className='bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary'
+          <form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            className='mt-12 flex flex-col gap-8'
           >
-            {loading ? "Enviando..." : "Enviar"}
-          </button>
-        </form>
+            <label className='flex flex-col'>
+              <span className='text-white font-medium mb-4'>Nombre</span>
+              <input
+                type='text'
+                name='name'
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Nombre completo"
+                className='py-4 px-6 placeholder:text-secondary text-white rounded-2xl outline-none font-medium transition-all duration-300'
+                style={{
+                  background: "linear-gradient(135deg, rgba(145, 94, 255, 0.05), rgba(10, 10, 35, 0.5))",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(145, 94, 255, 0.2)",
+                }}
+                onFocus={(e) => {
+                  e.target.style.border = "1px solid rgba(145, 94, 255, 0.6)";
+                  e.target.style.boxShadow = "0 0 20px rgba(145, 94, 255, 0.3)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.border = "1px solid rgba(145, 94, 255, 0.2)";
+                  e.target.style.boxShadow = "none";
+                }}
+              />
+            </label>
+            <label className='flex flex-col'>
+              <span className='text-white font-medium mb-4'>Email</span>
+              <input
+                type='email'
+                name='email'
+                value={form.email}
+                onChange={handleChange}
+                placeholder="PruebaEmail@dominio.com"
+                className='py-4 px-6 placeholder:text-secondary text-white rounded-2xl outline-none font-medium transition-all duration-300'
+                style={{
+                  background: "linear-gradient(135deg, rgba(145, 94, 255, 0.05), rgba(10, 10, 35, 0.5))",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(145, 94, 255, 0.2)",
+                }}
+                onFocus={(e) => {
+                  e.target.style.border = "1px solid rgba(145, 94, 255, 0.6)";
+                  e.target.style.boxShadow = "0 0 20px rgba(145, 94, 255, 0.3)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.border = "1px solid rgba(145, 94, 255, 0.2)";
+                  e.target.style.boxShadow = "none";
+                }}
+              />
+            </label>
+            <label className='flex flex-col'>
+              <span className='text-white font-medium mb-4'>Mensaje</span>
+              <textarea
+                rows={7}
+                name='message'
+                value={form.message}
+                onChange={handleChange}
+                placeholder='Ejemplo: Hola buenos días, me gustaria contactar contigo para solicitar información '
+                className='py-4 px-6 placeholder:text-secondary text-white rounded-2xl outline-none font-medium transition-all duration-300 resize-none'
+                style={{
+                  background: "linear-gradient(135deg, rgba(145, 94, 255, 0.05), rgba(10, 10, 35, 0.5))",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(145, 94, 255, 0.2)",
+                }}
+                onFocus={(e) => {
+                  e.target.style.border = "1px solid rgba(145, 94, 255, 0.6)";
+                  e.target.style.boxShadow = "0 0 20px rgba(145, 94, 255, 0.3)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.border = "1px solid rgba(145, 94, 255, 0.2)";
+                  e.target.style.boxShadow = "none";
+                }}
+              />
+            </label>
+
+            <motion.button
+              type='submit'
+              className='py-4 px-10 rounded-2xl outline-none w-fit text-white font-bold relative overflow-hidden group'
+              style={{
+                background: "linear-gradient(135deg, rgba(145, 94, 255, 0.8), rgba(145, 94, 255, 0.5))",
+                border: "1px solid rgba(145, 94, 255, 0.4)",
+                boxShadow: "0 4px 15px rgba(145, 94, 255, 0.3)",
+              }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 8px 30px rgba(145, 94, 255, 0.5)",
+              }}
+              whileTap={{ scale: 0.95 }}
+              disabled={loading}
+            >
+              {/* Shine effect */}
+              <div
+                className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-30 group-hover:left-full transition-all duration-700 ease-out"
+                style={{ transform: "skewX(-20deg)" }}
+              />
+              <span className="relative z-10">
+                {loading ? "Enviando..." : "Enviar"}
+              </span>
+            </motion.button>
+          </form>
+        </div>
       </motion.div>
 
       <motion.div

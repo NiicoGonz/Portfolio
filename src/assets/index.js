@@ -15,10 +15,10 @@ import redux from "./skills/redux.svg";
 import Heinsohn from "./company/Heinsohn.png"
 import celuweb from "./company/celuweb.png"
 import assist from "./asist.png"
-import carrent from "./carrent.png";
-import jobit from "./jobit.png";
-import assed from "./assed.png";
-import postobon from "./postobonB2B.png";
+import carrent from "./carrent.webp";
+import jobit from "./jobit.webp";
+import assed from "./assed.webp";
+import postobon from "./postobonB2B.webp";
 import postobonB2C from "./postobonb2c.png";
 import js from "./skills/js.svg";
 import Angular from "./skills/angular.svg";

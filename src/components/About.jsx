@@ -1,60 +1,168 @@
 /* eslint-disable react/prop-types */
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 import { styles } from "../styles";
 import { services } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
-import { Tilt } from "react-tilt";
 
-const ServiceCard = ({ index, title, icon }) => (
-  <Tilt className="xs:w-[250px] w-full">
+const ServiceCard = ({ index, title, icon }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Colores dinámicos por servicio
+  const colors = {
+    "Frontend Developer": "#61DAFB",
+    "Microservicios": "#E0234E",
+    "Backend Developer": "#339933",
+    "Creador de contenido": "#8B5CF6"
+  };
+
+  const color = colors[title] || "#915EFF";
+
+  return (
     <motion.div
-      variants={fadeIn("right", "spring", index * 0.5, 0.75)}
-      className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.15 }}
+      viewport={{ once: true }}
+      whileHover={{
+        scale: 1.05,
+        y: -10,
+        transition: { duration: 0.3 }
+      }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className="xs:w-[250px] w-full group relative"
     >
+      {/* Glassmorphism Card */}
       <div
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
+        className="relative w-full rounded-3xl overflow-hidden cursor-pointer"
+        style={{
+          background: `linear-gradient(135deg, ${color}15, ${color}05)`,
+          backdropFilter: "blur(15px)",
+          WebkitBackdropFilter: "blur(15px)",
+          border: `1px solid ${color}30`,
+          boxShadow: `0 8px 32px 0 ${color}20`,
+          minHeight: "280px",
         }}
-        className="bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col"
       >
-        <img
-          src={icon}
-          alt="web-development"
-          className="w-16 h-16 object-contain"
+        {/* Glow effect on hover */}
+        <motion.div
+          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          style={{
+            background: `radial-gradient(circle at center, ${color}40, transparent 70%)`,
+          }}
         />
 
-        <h3 className="text-white text-[20px] font-bold text-center">
-          {title}
-        </h3>
+        {/* Gradient border on hover */}
+        <motion.div
+          className="absolute inset-0 rounded-3xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          style={{
+            background: `linear-gradient(135deg, ${color}, ${color}50)`,
+            padding: "2px",
+            WebkitMask:
+              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            WebkitMaskComposite: "xor",
+            maskComposite: "exclude",
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative z-10 py-5 px-12 flex justify-evenly items-center flex-col h-full">
+          {/* Icon with floating animation */}
+          <motion.div
+            className="mb-6"
+            animate={{
+              y: isHovered ? [-5, 5, -5] : 0,
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          >
+            <div className="relative">
+              <img
+                src={icon}
+                alt={title}
+                className="w-20 h-20 object-contain transform group-hover:scale-110 transition-transform duration-300"
+                style={{
+                  filter: `drop-shadow(0 0 20px ${color}80)`,
+                }}
+              />
+              {/* Glow circle behind icon */}
+              <div
+                className="absolute inset-0 rounded-full blur-2xl -z-10 opacity-50 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  background: `radial-gradient(circle, ${color}, transparent)`,
+                }}
+              />
+            </div>
+          </motion.div>
+
+          {/* Title */}
+          <h3
+            className="text-white text-[20px] font-bold text-center tracking-wide"
+            style={{
+              textShadow: `0 0 20px ${color}80`,
+            }}
+          >
+            {title}
+          </h3>
+
+          {/* Decorative line */}
+          <motion.div
+            className="mt-4 h-1 rounded-full"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
+            }}
+            initial={{ width: 0 }}
+            animate={{ width: isHovered ? "100%" : "50%" }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+
+        {/* Shine effect */}
+        <div
+          className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-20 group-hover:left-full transition-all duration-1000 ease-out"
+          style={{ transform: "skewX(-20deg)" }}
+        />
       </div>
     </motion.div>
-  </Tilt>
-);
+  );
+};
 
 const About = () => {
   return (
     <>
       <motion.div variants={textVariant()}>
-        <h2 className={styles.sectionHeadText}>Sobre mi.</h2>
+        <p className={styles.sectionSubText}>Introducción</p>
+        <h2 className={styles.sectionHeadText}>Sobre mí.</h2>
       </motion.div>
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
         className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
       >
-        Soy un desarrollador de software habilidoso con experiencia en
-        TypeScript y JavaScript, y experiencia en frameworks como React, Node.js
-        y Nest.js. Soy un aprendiz rápido y colaboro estrechamente con los
+        Soy un <span className="text-white font-semibold">ingeniero de software</span> habilidoso con experiencia en{" "}
+        <span className="text-[#3178C6]">TypeScript</span> y{" "}
+        <span className="text-[#F7DF1E]">JavaScript</span>, experiencia en frameworks como{" "}
+        <span className="text-[#61DAFB]">React</span>,{" "}
+        <span className="text-[#339933]">Node.js</span> y{" "}
+        <span className="text-[#E0234E]">Nest.js</span>. Soy un aprendiz rápido y colaboro estrechamente con los
         clientes para crear soluciones eficientes, escalables y fáciles de usar
         que resuelvan problemas del mundo real. ¡Trabajemos juntos para dar vida
         a tus ideas!
       </motion.p>
 
-      <div className="mt-20 flex flex-wrap gap-10">
+      <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {services.map((service, index) => (
           <ServiceCard key={service.title} index={index} {...service} />
         ))}
