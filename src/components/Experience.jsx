@@ -11,6 +11,8 @@ import { styles } from "../styles";
 import { experiences } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 
 const ExperienceCard = ({ experience, index }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -124,20 +126,30 @@ const ExperienceCard = ({ experience, index }) => {
 };
 
 const Experience = () => {
+  const { language } = useLanguage();
+  const t = translations[language].experience;
+
+  // Combinar datos estáticos (iconos) con traducciones
+  const translatedExperiences = t.experiences.map((exp, index) => ({
+    ...exp,
+    icon: experiences[index]?.icon,
+    iconBg: experiences[index]?.iconBg,
+  }));
+
   return (
     <>
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} text-center`}>
-          Lo que he hecho hasta ahora
+          {t.subtitle}
         </p>
         <h2 className={`${styles.sectionHeadText} text-center`}>
-          Experiencia laboral.
+          {t.title}
         </h2>
       </motion.div>
 
       <div className='mt-20 flex flex-col'>
         <VerticalTimeline>
-          {experiences.map((experience, index) => (
+          {translatedExperiences.map((experience, index) => (
             <ExperienceCard
               key={`experience-${index}`}
               experience={experience}

@@ -1,11 +1,13 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useMemo, useEffect } from "react";
 
 import { styles } from "../styles";
 import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
 import { projects } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 
 const ProjectCard = ({
   index,
@@ -28,10 +30,11 @@ const ProjectCard = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.2 }}
-      viewport={{ once: true }}
+      layout
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.5 }}
       whileHover={{
         y: -10,
         transition: { duration: 0.3 },
@@ -63,7 +66,7 @@ const ProjectCard = ({
         />
 
         {/* Image Container */}
-        <div className="relative w-full h-[230px] overflow-hidden rounded-t-3xl">
+        <div className="relative w-full h-[200px] sm:h-[230px] overflow-hidden rounded-t-3xl">
           <motion.img
             src={image}
             alt={name}
@@ -108,10 +111,10 @@ const ProjectCard = ({
         </div>
 
         {/* Content */}
-        <div className="relative z-10 p-6">
+        <div className="relative z-10 p-4 sm:p-6">
           {/* Title */}
           <h3
-            className="text-white font-bold text-[24px] mb-3"
+            className="text-white font-bold text-[20px] sm:text-[24px] mb-2 sm:mb-3"
             style={{
               textShadow: `0 0 20px ${primaryColor}60`,
             }}
@@ -120,7 +123,7 @@ const ProjectCard = ({
           </h3>
 
           {/* Description */}
-          <p className="text-secondary text-[14px] leading-relaxed mb-4">
+          <p className="text-secondary text-[13px] sm:text-[14px] leading-relaxed mb-3 sm:mb-4">
             {description}
           </p>
 
@@ -141,7 +144,7 @@ const ProjectCard = ({
                 <motion.span
                   key={`${name}-${tag.name}`}
                   whileHover={{ scale: 1.1 }}
-                  className="px-3 py-1 rounded-full text-[12px] font-semibold"
+                  className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-[12px] font-semibold"
                   style={{
                     background: `${tagColor}20`,
                     color: tagColor,
@@ -166,30 +169,138 @@ const ProjectCard = ({
 };
 
 const Works = () => {
+  const { language } = useLanguage();
+  const t = translations[language].works;
+  const [activeFilter, setActiveFilter] = useState(t.all);
+
+  // Actualizar el filtro activo cuando cambia el idioma
+  useEffect(() => {
+    setActiveFilter(t.all);
+  }, [language, t.all]);
+
+  // Combinar datos estáticos (imágenes, tags) con traducciones
+  const translatedProjects = useMemo(() => {
+    return t.projects.map((translatedProject, index) => ({
+      ...translatedProject,
+      image: projects[index]?.image,
+      tags: projects[index]?.tags || [],
+      source_code_link: projects[index]?.source_code_link,
+    }));
+  }, [language]);
+
+  // Extraer todas las tecnologías únicas de los proyectos
+  const allTags = useMemo(() => {
+    const tagsSet = new Set();
+    translatedProjects.forEach((project) => {
+      project.tags.forEach((tag) => tagsSet.add(tag.name));
+    });
+    return [t.all, ...Array.from(tagsSet)];
+  }, [t.all, translatedProjects]);
+
+  // Filtrar proyectos basado en el filtro activo
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === t.all) return translatedProjects;
+    return translatedProjects.filter((project) =>
+      project.tags.some((tag) => tag.name === activeFilter)
+    );
+  }, [activeFilter, t.all, translatedProjects]);
+
   return (
     <>
       <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>Mi trabajo</p>
-        <h2 className={styles.sectionHeadText}>Proyectos.</h2>
+        <p className={styles.sectionSubText}>{t.subtitle}</p>
+        <h2 className={styles.sectionHeadText}>{t.title}</h2>
       </motion.div>
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
+        className="mt-4 text-secondary text-[15px] sm:text-[17px] max-w-3xl leading-[26px] sm:leading-[30px]"
       >
-        Los siguientes proyectos muestran mis habilidades y experiencia a
-        través de ejemplos del mundo real de mi trabajo. Cada proyecto está
-        brevemente descrito con enlaces a repositorios de código y
-        demostraciones en vivo. Esto refleja mi capacidad para{" "}
-        <span className="text-white font-semibold">resolver problemas complejos</span>,
-        trabajar con diferentes tecnologías y gestionar proyectos de manera efectiva.
+        {t.description}{" "}
+        <span className="text-white font-semibold">{t.complexProblems}</span>,{" "}
+        {t.descriptionEnd}
       </motion.p>
 
-      <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-        {projects.map((project, index) => (
-          <ProjectCard key={`project-${index}`} index={index} {...project} />
+      {/* Filter Buttons */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="mt-8 sm:mt-12 flex flex-wrap gap-3 justify-center"
+      >
+        {allTags.map((tag, index) => (
+          <motion.button
+            key={tag}
+            onClick={() => setActiveFilter(tag)}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: index * 0.05 }}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[13px] sm:text-[14px] font-semibold transition-all duration-300"
+            style={{
+              background:
+                activeFilter === tag
+                  ? "linear-gradient(135deg, rgba(145, 94, 255, 0.8), rgba(145, 94, 255, 0.5))"
+                  : "linear-gradient(135deg, rgba(145, 94, 255, 0.1), rgba(10, 10, 35, 0.5))",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              border:
+                activeFilter === tag
+                  ? "1px solid rgba(145, 94, 255, 0.6)"
+                  : "1px solid rgba(145, 94, 255, 0.2)",
+              boxShadow:
+                activeFilter === tag
+                  ? "0 4px 15px rgba(145, 94, 255, 0.4)"
+                  : "0 2px 10px rgba(145, 94, 255, 0.1)",
+              color: activeFilter === tag ? "#FFFFFF" : "#AAA6C3",
+            }}
+          >
+            {tag}
+            {activeFilter === tag && tag !== t.all && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="ml-2 inline-block w-2 h-2 rounded-full bg-white"
+              />
+            )}
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
+
+      {/* Projects Counter */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="mt-6 text-center"
+      >
+        <span className="text-secondary text-sm">
+          {t.showing} <span className="text-white font-semibold">{filteredProjects.length}</span> {t.of}{" "}
+          <span className="text-white font-semibold">{translatedProjects.length}</span> {t.projectsText}
+        </span>
+      </motion.div>
+
+      {/* Projects Grid */}
+      <motion.div layout className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+        <AnimatePresence mode="popLayout">
+          {filteredProjects.map((project, index) => (
+            <ProjectCard key={project.name} index={index} {...project} />
+          ))}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Empty State */}
+      {filteredProjects.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-20 text-center"
+        >
+          <p className="text-secondary text-lg">
+            {t.noProjects} <span className="text-white font-semibold">{activeFilter}</span>
+          </p>
+        </motion.div>
+      )}
     </>
   );
 };

@@ -10,6 +10,12 @@ import Testimonials from "./Testimonials";
 import Feedbacks from "./Feedbacks";
 import Contact from "./Contact";
 import CanvasLoader from "./Loader";
+import BackToTop from "./BackToTop";
+import SocialLinks from "./SocialLinks";
+import DownloadCV from "./DownloadCV";
+import Toast from "./Toast";
+import LanguageToggle from "./LanguageToggle";
+import EasterEggs from "./EasterEggs";
 
 export {
   Hero,
@@ -25,5 +31,11 @@ export {
   CanvasLoader,
   EarthCanvas,
   BallCanvas,
-  StarsCanvas
+  StarsCanvas,
+  BackToTop,
+  SocialLinks,
+  DownloadCV,
+  Toast,
+  LanguageToggle,
+  EasterEggs
 };

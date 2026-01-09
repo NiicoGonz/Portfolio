@@ -3,13 +3,32 @@ import "animate.css";
 
 import { styles } from "../styles";
 import { useEffect, useState } from "react";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 
 const Hero = () => {
+  const { language } = useLanguage();
+  const t = translations[language].hero;
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState("");
-  const [delta, setDelta] = useState(100);
-  const toRotate = ["Nicolas", "Software Engineer", "Data Engineer"];
+  const [delta, setDelta] = useState(150);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar si es móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Textos diferentes para móvil y desktop
+  const toRotate = isMobile ? t.titlesMobile : t.titles;
 
   useEffect(() => {
     let ticker = setInterval(() => {
@@ -31,16 +50,16 @@ const Hero = () => {
     setText(updatedText);
 
     if (isDeleting) {
-      setDelta(50);
+      setDelta(80);
     }
 
     if (!isDeleting && updatedText === fullText) {
       setIsDeleting(true);
-      setDelta(100);
+      setDelta(2000); // Pause 2 seconds when complete
     } else if (isDeleting && updatedText === "") {
       setIsDeleting(false);
       setLoopNum(loopNum + 1);
-      setDelta(140);
+      setDelta(200);
     }
   };
 
@@ -122,7 +141,7 @@ const Hero = () => {
               transition={{ duration: 0.3 }}
             >
               <h1 className={`${styles.heroHeadText} text-white`}>
-                Hola, soy{" "}
+                {t.greeting}{" "}
                 <span
                   className="text-[#915EFF]"
                   style={{
@@ -147,22 +166,7 @@ const Hero = () => {
               transition={{ delay: 0.5, duration: 1 }}
               className={`${styles.heroSubText} mt-4 sm:mt-6 md:mt-8 text-white-100`}
             >
-              Soy un{" "}
-              <span className="text-white font-semibold">
-                ingeniero de software
-              </span>{" "}
-              especializado en{" "}
-              <span className="text-[#61DAFB] font-semibold">
-                desarrollo web
-              </span>
-              ,{" "}
-              <span className="text-[#339933] font-semibold">APIs</span> y{" "}
-              <span className="text-[#E0234E] font-semibold">
-                microservicios
-              </span>
-              . Mi enfoque se centra en crear soluciones completas y
-              eficientes. Estoy emocionado de compartir mi trabajo contigo y
-              explorar cómo puedo contribuir a tus proyectos.
+              {t.description}
             </motion.p>
 
             {/* Decorative elements */}

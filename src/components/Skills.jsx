@@ -1,9 +1,167 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 import { SectionWrapper } from "../hoc";
 import { technologies } from "../constants";
 import { textVariant } from "../utils/motion";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
+import { useModal } from "../context/ModalContext";
 
-const SkillCard = ({ technology, index }) => {
+const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
+  const { openModal, closeModal } = useModal();
+
+  // Sincronizar con el contexto del modal
+  useEffect(() => {
+    if (isOpen) {
+      openModal();
+    } else {
+      closeModal();
+    }
+  }, [isOpen, openModal, closeModal]);
+
+  if (!technology) return null;
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100]"
+            onClick={onClose}
+          />
+
+          {/* Modal */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 50 }}
+            transition={{ duration: 0.3, type: "spring" }}
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-[90%] max-w-2xl max-h-[85vh] overflow-y-auto"
+          >
+            <div
+              className="relative rounded-3xl p-6 sm:p-8 md:p-10"
+              style={{
+                background: `linear-gradient(135deg, ${technology.color}20, rgba(10, 10, 35, 0.95))`,
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+                border: `2px solid ${technology.color}60`,
+                boxShadow: `0 20px 60px 0 ${technology.color}40`,
+              }}
+            >
+              {/* Close button */}
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={onClose}
+                className="absolute top-4 right-4 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center"
+                style={{
+                  background: `${technology.color}30`,
+                  border: `1px solid ${technology.color}60`,
+                }}
+              >
+                <svg
+                  className="w-5 h-5 sm:w-6 sm:h-6"
+                  fill="none"
+                  stroke={technology.color}
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </motion.button>
+
+              {/* Header with icon and title */}
+              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+                <motion.div
+                  animate={{
+                    y: [0, -10, 0],
+                    rotate: [0, 5, -5, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  }}
+                  className="flex-shrink-0"
+                >
+                  <div
+                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center"
+                    style={{
+                      background: `linear-gradient(135deg, ${technology.color}40, ${technology.color}10)`,
+                      border: `2px solid ${technology.color}60`,
+                      boxShadow: `0 0 30px ${technology.color}60`,
+                    }}
+                  >
+                    <img
+                      src={technology.icon}
+                      alt={technology.name}
+                      className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                      style={{
+                        filter: `drop-shadow(0 0 10px ${technology.color}80)`,
+                      }}
+                    />
+                  </div>
+                </motion.div>
+
+                <div className="flex-1 text-center sm:text-left">
+                  <h3
+                    className="text-3xl sm:text-4xl font-bold mb-2"
+                    style={{
+                      color: technology.color,
+                      textShadow: `0 0 30px ${technology.color}80`,
+                    }}
+                  >
+                    {technology.name}
+                  </h3>
+                  <div
+                    className="h-1 w-20 sm:w-32 rounded-full mx-auto sm:mx-0"
+                    style={{
+                      background: `linear-gradient(90deg, ${technology.color}, transparent)`,
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Description section */}
+              <div className="mb-6 sm:mb-8">
+                <h4 className="text-white text-lg sm:text-xl font-bold mb-3 flex items-center gap-2">
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ background: technology.color }}
+                  />
+                  {translations[language].skills.whatIs}
+                </h4>
+                <p className="text-secondary text-[14px] sm:text-[15px] leading-relaxed pl-4">
+                  {translations[language].skills.technologies[technology.name]?.description || technology.description}
+                </p>
+              </div>
+
+
+              {/* Decorative glow */}
+              <div
+                className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-30 pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle, ${technology.color}, transparent)`,
+                }}
+              />
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
+
+const SkillCard = ({ technology, index, onClick }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -16,6 +174,7 @@ const SkillCard = ({ technology, index }) => {
         transition: { duration: 0.2 }
       }}
       className="relative group"
+      onClick={onClick}
     >
       {/* Glassmorphism Card */}
       <div
@@ -85,14 +244,33 @@ const SkillCard = ({ technology, index }) => {
 };
 
 const Skills = () => {
+  const { language } = useLanguage();
+  const t = translations[language].skills;
+  const [selectedTechnology, setSelectedTechnology] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { openModal, closeModal } = useModal();
+
+  const handleSkillClick = (technology) => {
+    setSelectedTechnology(technology);
+    setIsModalOpen(true);
+    openModal();
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    closeModal();
+    setTimeout(() => setSelectedTechnology(null), 300);
+  };
+
   return (
     <>
       <motion.div variants={textVariant()}>
         <p className="sm:text-[18px] text-[14px] text-secondary uppercase tracking-wider text-center">
-          Mi Stack Tecnológico
+          {t.subtitle}
         </p>
         <h2 className="text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center">
-          Skills.
+          {t.title}
         </h2>
       </motion.div>
 
@@ -102,9 +280,17 @@ const Skills = () => {
             key={technology.name}
             technology={technology}
             index={index}
+            onClick={() => handleSkillClick(technology)}
           />
         ))}
       </div>
+
+      <TechnologyModal
+        technology={selectedTechnology}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        language={language}
+      />
     </>
   );
 };

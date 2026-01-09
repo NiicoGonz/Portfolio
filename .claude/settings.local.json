@@ -5,7 +5,12 @@
       "Bash(npm install:*)",
       "Bash(ls:*)",
       "Bash(npx sharp:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(if [ -f \"c:\\\\Users\\\\NicolasGonzalezMarti\\\\OneDrive - CELUWEB.COM S.A.S\\\\Escritorio\\\\devniico\\\\Portfolio\\\\.gitignore\" ])",
+      "Bash(then)",
+      "Bash(fi)",
+      "Bash(else)"
     ]
   }
 }

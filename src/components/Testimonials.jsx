@@ -5,10 +5,12 @@ import { styles } from "../styles";
 import { testimonials } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 
 const StarRating = ({ rating, color }) => {
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-0.5 sm:gap-1">
       {[...Array(5)].map((_, index) => (
         <motion.svg
           key={index}
@@ -16,7 +18,7 @@ const StarRating = ({ rating, color }) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: index * 0.1, duration: 0.3 }}
           whileHover={{ scale: 1.2, rotate: 15 }}
-          className="w-5 h-5"
+          className="w-4 h-4 sm:w-5 sm:h-5"
           fill={index < rating ? color : "rgba(255, 255, 255, 0.2)"}
           viewBox="0 0 20 20"
         >
@@ -95,10 +97,10 @@ const TestimonialCard = ({ testimonial, name, designation, company, rating, inde
         />
 
         {/* Content */}
-        <div className="relative z-10 py-8 px-6 flex flex-col h-full">
+        <div className="relative z-10 py-6 px-4 sm:py-8 sm:px-6 flex flex-col h-full">
           {/* Quote Icon */}
           <motion.div
-            className="mb-4"
+            className="mb-3 sm:mb-4"
             animate={{
               rotate: isHovered ? [0, 5, 0] : 0,
             }}
@@ -109,7 +111,7 @@ const TestimonialCard = ({ testimonial, name, designation, company, rating, inde
             }}
           >
             <svg
-              className="w-12 h-12 opacity-40"
+              className="w-10 h-10 sm:w-12 sm:h-12 opacity-40"
               fill={cardColor}
               viewBox="0 0 24 24"
             >
@@ -118,13 +120,13 @@ const TestimonialCard = ({ testimonial, name, designation, company, rating, inde
           </motion.div>
 
           {/* Testimonial Text */}
-          <p className="text-white text-[15px] leading-relaxed mb-6 flex-1">
+          <p className="text-white text-[14px] sm:text-[15px] leading-relaxed mb-4 sm:mb-6 flex-1">
             {testimonial}
           </p>
 
           {/* Divider */}
           <motion.div
-            className="h-[1px] mb-4"
+            className="h-[1px] mb-3 sm:mb-4"
             style={{
               background: `linear-gradient(90deg, transparent, ${cardColor}60, transparent)`,
             }}
@@ -134,10 +136,10 @@ const TestimonialCard = ({ testimonial, name, designation, company, rating, inde
           />
 
           {/* Author Info */}
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex-1">
               <h4
-                className="text-white text-[18px] font-bold"
+                className="text-white text-[16px] sm:text-[18px] font-bold"
                 style={{
                   textShadow: `0 0 15px ${cardColor}60`,
                 }}
@@ -145,7 +147,7 @@ const TestimonialCard = ({ testimonial, name, designation, company, rating, inde
                 {name}
               </h4>
               <p
-                className="text-[13px] font-medium"
+                className="text-[12px] sm:text-[13px] font-medium"
                 style={{
                   color: cardColor,
                   opacity: 0.9,
@@ -153,11 +155,11 @@ const TestimonialCard = ({ testimonial, name, designation, company, rating, inde
               >
                 {designation}
               </p>
-              <p className="text-secondary text-[12px]">{company}</p>
+              <p className="text-secondary text-[11px] sm:text-[12px]">{company}</p>
             </div>
 
             {/* Star Rating */}
-            <div className="flex flex-col items-end">
+            <div className="flex flex-col items-end flex-shrink-0">
               <StarRating rating={rating} color={cardColor} />
             </div>
           </div>
@@ -174,26 +176,34 @@ const TestimonialCard = ({ testimonial, name, designation, company, rating, inde
 };
 
 const Testimonials = () => {
+  const { language } = useLanguage();
+  const t = translations[language].testimonials;
+
+  // Combinar datos estáticos (rating) con traducciones
+  const translatedTestimonials = t.items.map((testimonial, index) => ({
+    ...testimonial,
+    rating: testimonials[index]?.rating || 5,
+  }));
+
   return (
     <>
       <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>Lo que dicen de mí</p>
-        <h2 className={styles.sectionHeadText}>Testimonios.</h2>
+        <p className={styles.sectionSubText}>{t.subtitle}</p>
+        <h2 className={styles.sectionHeadText}>{t.title}</h2>
       </motion.div>
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px] mb-10"
+        className="mt-4 text-secondary text-[15px] sm:text-[17px] max-w-3xl leading-[26px] sm:leading-[30px] mb-10"
       >
-        La satisfacción de mis clientes es mi mayor logro. Aquí comparto algunas opiniones de
-        personas y empresas con las que he tenido el{" "}
-        <span className="text-white font-semibold">placer de colaborar</span>, construyendo
-        soluciones que realmente{" "}
-        <span className="text-[#915EFF] font-semibold">generan impacto</span>.
+        {t.description}{" "}
+        <span className="text-white font-semibold">{t.pleasure}</span>,{" "}
+        {t.descriptionEnd}{" "}
+        <span className="text-[#915EFF] font-semibold">{t.impact}</span>.
       </motion.p>
 
       <div className="mt-12 flex flex-wrap gap-6">
-        {testimonials.map((testimonial, index) => (
+        {translatedTestimonials.map((testimonial, index) => (
           <TestimonialCard key={`testimonial-${index}`} index={index} {...testimonial} />
         ))}
       </div>

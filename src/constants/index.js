@@ -65,67 +65,93 @@ const technologies = [
   {
     name: "HTML 5",
     icon: html,
-    color: "#E34F26" // Naranja HTML5
+    color: "#E34F26", // Naranja HTML5
+    description: "Lenguaje de marcado estándar para crear páginas web. Define la estructura y el contenido de las páginas web mediante elementos y etiquetas semánticas.",
+    implementation: "Lo uso para estructurar todas mis aplicaciones web, utilizando elementos semánticos como <header>, <nav>, <main>, <section> para mejorar la accesibilidad y SEO. También implemento APIs modernas como Canvas, Web Storage y Geolocation."
   },
   {
     name: "CSS 3",
     icon: css,
-    color: "#1572B6" // Azul CSS3
+    color: "#1572B6", // Azul CSS3
+    description: "Lenguaje de hojas de estilo usado para describir la presentación de documentos HTML. Permite crear diseños responsivos y animaciones complejas.",
+    implementation: "Utilizo CSS3 avanzado con Flexbox, Grid Layout, animaciones y transiciones. Combino CSS modules con preprocesadores como SASS para crear sistemas de diseño escalables y maintainables. También aplico metodologías BEM para organizar el código."
   },
   {
     name: "Javascritp",
     icon: js,
-    color: "#F7DF1E" // Amarillo JavaScript
+    color: "#F7DF1E", // Amarillo JavaScript
+    description: "Lenguaje de programación interpretado, orientado a objetos y basado en eventos. Es el lenguaje principal para desarrollo web interactivo del lado del cliente.",
+    implementation: "Lo utilizo para crear lógica de aplicaciones complejas, manipulación del DOM, manejo de eventos asíncronos con Promises y async/await, y consumo de APIs REST. Implemento patrones de diseño modernos y ES6+ features."
   },
   {
     name: "Angular",
     icon: Angular,
-    color: "#DD0031" // Rojo Angular
+    color: "#DD0031", // Rojo Angular
+    description: "Framework de desarrollo web de Google basado en TypeScript. Proporciona una arquitectura completa para aplicaciones empresariales de gran escala.",
+    implementation: "He desarrollado aplicaciones empresariales complejas usando Angular, implementando arquitectura modular, servicios con RxJS, state management con NgRx, y componentes reutilizables. Lo uso especialmente en proyectos B2B que requieren robustez y escalabilidad."
   },
   {
     name: "React",
     icon: React,
-    color: "#61DAFB" // Cyan React
+    color: "#61DAFB", // Cyan React
+    description: "Biblioteca de JavaScript para construir interfaces de usuario mediante componentes reutilizables. Desarrollada y mantenida por Meta (Facebook).",
+    implementation: "Mi framework favorito para desarrollo frontend. Implemento hooks personalizados, Context API, React Router, y estado global con Redux o Zustand. Creo componentes optimizados con memo y useMemo, e integro con librerías como Framer Motion para animaciones."
   },
   {
     name: "Nodejs",
     icon: Node,
-    color: "#339933" // Verde Node.js
+    color: "#339933", // Verde Node.js
+    description: "Entorno de ejecución de JavaScript del lado del servidor construido sobre el motor V8 de Chrome. Permite crear aplicaciones de red escalables.",
+    implementation: "Lo uso para construir APIs RESTful y GraphQL, servidores web con Express, y microservicios. Implemento autenticación JWT, middleware personalizados, websockets para comunicación en tiempo real, y gestión de eventos asíncronos con Event Emitters."
   },
   {
     name: "Nest",
     icon: Nest,
-    color: "#E0234E" // Rojo NestJS
+    color: "#E0234E", // Rojo NestJS
+    description: "Framework progresivo de Node.js para construir aplicaciones del lado del servidor eficientes y escalables, inspirado en Angular y construido con TypeScript.",
+    implementation: "Mi framework preferido para backend. Implemento arquitectura modular con dependency injection, guards para autenticación y autorización, pipes para validación de datos, interceptors para transformación de respuestas, y decoradores personalizados. Ideal para microservicios."
   },
   {
     name: "Docker",
     icon: Docker,
-    color: "#2496ED" // Azul Docker
+    color: "#2496ED", // Azul Docker
+    description: "Plataforma de contenedorización que permite empaquetar aplicaciones con todas sus dependencias en contenedores portátiles y aislados.",
+    implementation: "Uso Docker para crear ambientes de desarrollo consistentes, dockerizar aplicaciones completas con docker-compose, crear imágenes optimizadas multi-stage, y desplegar microservicios. Implemento CI/CD con Docker en pipelines de GitHub Actions y GitLab."
   },
   {
     name: "Git",
     icon: Git,
-    color: "#F05032" // Naranja Git
+    color: "#F05032", // Naranja Git
+    description: "Sistema de control de versiones distribuido para rastrear cambios en el código fuente durante el desarrollo de software.",
+    implementation: "Uso Git diariamente para control de versiones, siguiendo Git Flow para ramas (feature, develop, main), creando commits atómicos y descriptivos, realizando code reviews con pull requests, y resolviendo conflictos de merge. Trabajo con GitHub y GitLab."
   },
   {
     name: "Mongo",
     icon: Mongo,
-    color: "#47A248" // Verde MongoDB
+    color: "#47A248", // Verde MongoDB
+    description: "Base de datos NoSQL orientada a documentos que almacena datos en formato JSON. Flexible y escalable, ideal para aplicaciones modernas.",
+    implementation: "Implemento MongoDB en proyectos que requieren flexibilidad de esquema. Uso Mongoose para modelado de datos, creación de schemas con validaciones, índices para optimización de queries, agregaciones complejas, y transacciones para operaciones atómicas."
   },
   {
     name: "Postgres",
     icon: Postgres,
-    color: "#4169E1" // Azul PostgreSQL
+    color: "#4169E1", // Azul PostgreSQL
+    description: "Sistema de gestión de bases de datos relacional y objeto-relacional de código abierto. Conocido por su robustez, extensibilidad y cumplimiento de estándares SQL.",
+    implementation: "Mi base de datos relacional preferida. Diseño esquemas normalizados, implemento relaciones complejas con foreign keys, creo índices compuestos para optimización, uso triggers y stored procedures, y manejo transacciones ACID. Trabajo con TypeORM y Prisma."
   },
   {
     name: "Python",
     icon: Python,
-    color: "#3776AB" // Azul Python
+    color: "#3776AB", // Azul Python
+    description: "Lenguaje de programación de alto nivel, interpretado y de propósito general. Conocido por su sintaxis clara y legible.",
+    implementation: "Lo utilizo para scripting, automatización de tareas, análisis de datos con Pandas y NumPy, creación de APIs con FastAPI y Flask, y desarrollo de scripts ETL para procesamiento de datos. También implemento web scraping con BeautifulSoup y Selenium."
   },
   {
     name: "Typescript",
     icon: Ts,
-    color: "#3178C6" // Azul TypeScript
+    color: "#3178C6", // Azul TypeScript
+    description: "Superset de JavaScript que añade tipado estático opcional. Desarrollado por Microsoft, compila a JavaScript puro y mejora la calidad del código.",
+    implementation: "Mi lenguaje principal para desarrollo. Implemento tipos estrictos, interfaces, generics, utility types, y decoradores. Uso TypeScript en todos mis proyectos de React, Node.js y NestJS para detectar errores en tiempo de compilación y mejorar la experiencia de desarrollo."
   },
 ];
 

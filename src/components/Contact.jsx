@@ -6,6 +6,10 @@ import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
+import Toast from "./Toast";
+import { useToast } from "../hooks/useToast";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 
 const Contact = () => {
   const formRef = useRef();
@@ -15,9 +19,10 @@ const Contact = () => {
     message: "",
   });
 
-  
-
   const [loading, setLoading] = useState(false);
+  const { toast, showToast, hideToast } = useToast();
+  const { language } = useLanguage();
+  const t = translations[language].contact;
 
   const handleChange = (e) => {
     const { target } = e;
@@ -31,6 +36,30 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validación de campos
+    if (!form.name.trim()) {
+      showToast(t.nameRequired, "warning");
+      return;
+    }
+
+    if (!form.email.trim()) {
+      showToast(t.emailRequired, "warning");
+      return;
+    }
+
+    // Validación básica de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      showToast(t.emailInvalid, "warning");
+      return;
+    }
+
+    if (!form.message.trim()) {
+      showToast(t.messageRequired, "warning");
+      return;
+    }
+
     setLoading(true);
 
     emailjs
@@ -49,7 +78,7 @@ const Contact = () => {
       .then(
         () => {
           setLoading(false);
-          alert("Gracias. Te responderé tan pronto como sea posible. 🙏✉️");
+          showToast(t.success, "success");
 
           setForm({
             name: "",
@@ -61,26 +90,34 @@ const Contact = () => {
           setLoading(false);
           console.error(error);
 
-          alert("¡Ah, algo salió mal! Por favor, inténtalo de nuevo. 😔🔄");
+          showToast(t.error, "error");
         }
       );
   };
 
   return (
-    <div
-      className={`xl:mt-12 flex xl:flex-row flex-col-reverse gap-10 overflow-hidden`}
-    >
-      <motion.div
-        variants={slideIn("left", "tween", 0.2, 1)}
-        className='flex-[0.75] p-8 rounded-3xl relative group'
-        style={{
+    <>
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={hideToast}
+      />
+
+      <div
+        className={`xl:mt-12 flex xl:flex-row flex-col-reverse gap-10 overflow-hidden`}
+      >
+        <motion.div
+          variants={slideIn("left", "tween", 0.2, 1)}
+          className='flex-[0.75] p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl relative group'
+          style={{
           background: "linear-gradient(135deg, rgba(145, 94, 255, 0.1), rgba(10, 10, 35, 0.8))",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
           border: "1px solid rgba(145, 94, 255, 0.3)",
           boxShadow: "0 8px 32px 0 rgba(145, 94, 255, 0.2)",
-        }}
-      >
+          }}
+        >
         {/* Glow effect */}
         <div
           className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
@@ -90,23 +127,24 @@ const Contact = () => {
         />
 
         <div className="relative z-10">
-          <p className={styles.sectionSubText}>Ponte en contacto</p>
-          <h3 className={styles.sectionHeadText}>Contacto.</h3>
+          <p className={styles.sectionSubText}>{t.subtitle}</p>
+          <h3 className={styles.sectionHeadText}>{t.title}</h3>
 
           <form
             ref={formRef}
             onSubmit={handleSubmit}
-            className='mt-12 flex flex-col gap-8'
+            className='mt-6 sm:mt-8 md:mt-12 flex flex-col gap-4 sm:gap-6 md:gap-8'
           >
             <label className='flex flex-col'>
-              <span className='text-white font-medium mb-4'>Nombre</span>
+              <span className='text-white font-medium mb-2 sm:mb-4 text-sm sm:text-base'>{t.nameLabel}</span>
               <input
                 type='text'
                 name='name'
                 value={form.name}
                 onChange={handleChange}
-                placeholder="Nombre completo"
-                className='py-4 px-6 placeholder:text-secondary text-white rounded-2xl outline-none font-medium transition-all duration-300'
+                placeholder={t.namePlaceholder}
+                required
+                className='py-3 px-4 sm:py-4 sm:px-6 placeholder:text-secondary text-white text-sm sm:text-base rounded-xl sm:rounded-2xl outline-none font-medium transition-all duration-300'
                 style={{
                   background: "linear-gradient(135deg, rgba(145, 94, 255, 0.05), rgba(10, 10, 35, 0.5))",
                   backdropFilter: "blur(10px)",
@@ -123,14 +161,15 @@ const Contact = () => {
               />
             </label>
             <label className='flex flex-col'>
-              <span className='text-white font-medium mb-4'>Email</span>
+              <span className='text-white font-medium mb-2 sm:mb-4 text-sm sm:text-base'>{t.emailLabel}</span>
               <input
                 type='email'
                 name='email'
                 value={form.email}
                 onChange={handleChange}
-                placeholder="PruebaEmail@dominio.com"
-                className='py-4 px-6 placeholder:text-secondary text-white rounded-2xl outline-none font-medium transition-all duration-300'
+                placeholder={t.emailPlaceholder}
+                required
+                className='py-3 px-4 sm:py-4 sm:px-6 placeholder:text-secondary text-white text-sm sm:text-base rounded-xl sm:rounded-2xl outline-none font-medium transition-all duration-300'
                 style={{
                   background: "linear-gradient(135deg, rgba(145, 94, 255, 0.05), rgba(10, 10, 35, 0.5))",
                   backdropFilter: "blur(10px)",
@@ -147,14 +186,16 @@ const Contact = () => {
               />
             </label>
             <label className='flex flex-col'>
-              <span className='text-white font-medium mb-4'>Mensaje</span>
+              <span className='text-white font-medium mb-2 sm:mb-4 text-sm sm:text-base'>{t.messageLabel}</span>
               <textarea
-                rows={7}
+                rows={5}
                 name='message'
                 value={form.message}
                 onChange={handleChange}
-                placeholder='Ejemplo: Hola buenos días, me gustaria contactar contigo para solicitar información '
-                className='py-4 px-6 placeholder:text-secondary text-white rounded-2xl outline-none font-medium transition-all duration-300 resize-none'
+                placeholder={t.messagePlaceholder}
+                required
+                minLength={10}
+                className='py-3 px-4 sm:py-4 sm:px-6 placeholder:text-secondary text-white text-sm sm:text-base rounded-xl sm:rounded-2xl outline-none font-medium transition-all duration-300 resize-none'
                 style={{
                   background: "linear-gradient(135deg, rgba(145, 94, 255, 0.05), rgba(10, 10, 35, 0.5))",
                   backdropFilter: "blur(10px)",
@@ -173,7 +214,7 @@ const Contact = () => {
 
             <motion.button
               type='submit'
-              className='py-4 px-10 rounded-2xl outline-none w-fit text-white font-bold relative overflow-hidden group'
+              className='py-3 px-8 sm:py-4 sm:px-10 rounded-xl sm:rounded-2xl outline-none w-fit text-white text-sm sm:text-base font-bold relative overflow-hidden group'
               style={{
                 background: "linear-gradient(135deg, rgba(145, 94, 255, 0.8), rgba(145, 94, 255, 0.5))",
                 border: "1px solid rgba(145, 94, 255, 0.4)",
@@ -192,20 +233,21 @@ const Contact = () => {
                 style={{ transform: "skewX(-20deg)" }}
               />
               <span className="relative z-10">
-                {loading ? "Enviando..." : "Enviar"}
+                {loading ? t.sending : t.send}
               </span>
             </motion.button>
           </form>
         </div>
-      </motion.div>
+        </motion.div>
 
-      <motion.div
-        variants={slideIn("right", "tween", 0.2, 1)}
-        className='xl:flex-1 xl:h-auto md:h-[550px] h-[350px]'
-      >
-        <EarthCanvas />
-      </motion.div>
-    </div>
+        <motion.div
+          variants={slideIn("right", "tween", 0.2, 1)}
+          className='xl:flex-1 xl:h-auto md:h-[550px] h-[350px]'
+        >
+          <EarthCanvas />
+        </motion.div>
+      </div>
+    </>
   );
 };
 

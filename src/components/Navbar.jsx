@@ -4,11 +4,30 @@ import { Link } from "react-router-dom";
 import { styles } from "../styles";
 import { navLinks } from "../constants";
 import { logo, menu, close } from "../assets";
+import DownloadCV from "./DownloadCV";
+import LanguageToggle from "./LanguageToggle";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 
 const Navbar = () => {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { language } = useLanguage();
+  const t = translations[language].nav;
+
+  // Mapeo de IDs a traducciones
+  const getNavTitle = (id) => {
+    const navMap = {
+      about: t.about,
+      work: t.work,
+      projects: t.projects,
+      contact: t.contact,
+      education: t.education,
+      skills: t.skills,
+    };
+    return navMap[id] || id;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,29 +87,38 @@ const Navbar = () => {
           </p>
         </Link>
 
-        <ul className="list-none hidden sm:flex flex-row gap-8">
-          {navLinks.map((nav) => (
-            <li
-              key={nav.id}
-              className="relative group"
-              onClick={() => setActive(nav.title)}
-            >
-              <a
-                href={`#${nav.id}`}
-                className={`${
-                  active === nav.title ? "text-white" : "text-secondary"
-                } text-[16px] font-medium cursor-pointer transition-all duration-300 group-hover:text-white`}
+        <ul className="list-none hidden sm:flex flex-row gap-8 items-center">
+          {navLinks.map((nav) => {
+            const title = getNavTitle(nav.id);
+            return (
+              <li
+                key={nav.id}
+                className="relative group"
+                onClick={() => setActive(title)}
               >
-                {nav.title}
-              </a>
-              {/* Underline effect */}
-              <div
-                className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 ${
-                  active === nav.title ? "w-full" : "w-0 group-hover:w-full"
-                }`}
-              />
-            </li>
-          ))}
+                <a
+                  href={`#${nav.id}`}
+                  className={`${
+                    active === title ? "text-white" : "text-secondary"
+                  } text-[16px] font-medium cursor-pointer transition-all duration-300 group-hover:text-white`}
+                >
+                  {title}
+                </a>
+                {/* Underline effect */}
+                <div
+                  className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 ${
+                    active === title ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
+              </li>
+            );
+          })}
+          <li>
+            <LanguageToggle />
+          </li>
+          <li>
+            <DownloadCV />
+          </li>
         </ul>
 
         <div className="sm:hidden flex flex-1 justify-end items-center">
@@ -118,20 +146,29 @@ const Navbar = () => {
             }}
           >
             <ul className="list-none flex justify-end items-start flex-1 flex-col gap-4">
-              {navLinks.map((nav) => (
-                <li
-                  key={nav.id}
-                  className={`font-poppins font-medium cursor-pointer text-[16px] transition-all duration-300 ${
-                    active === nav.title ? "text-white" : "text-secondary"
-                  } hover:text-white hover:translate-x-1`}
-                  onClick={() => {
-                    setToggle(!toggle);
-                    setActive(nav.title);
-                  }}
-                >
-                  <a href={`#${nav.id}`}>{nav.title}</a>
-                </li>
-              ))}
+              {navLinks.map((nav) => {
+                const title = getNavTitle(nav.id);
+                return (
+                  <li
+                    key={nav.id}
+                    className={`font-poppins font-medium cursor-pointer text-[16px] transition-all duration-300 ${
+                      active === title ? "text-white" : "text-secondary"
+                    } hover:text-white hover:translate-x-1`}
+                    onClick={() => {
+                      setToggle(!toggle);
+                      setActive(title);
+                    }}
+                  >
+                    <a href={`#${nav.id}`}>{title}</a>
+                  </li>
+                );
+              })}
+              <li className="mt-4 flex items-center gap-3">
+                <LanguageToggle />
+              </li>
+              <li>
+                <DownloadCV />
+              </li>
             </ul>
           </div>
         </div>

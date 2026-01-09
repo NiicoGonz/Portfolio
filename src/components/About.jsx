@@ -6,19 +6,16 @@ import { styles } from "../styles";
 import { services } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 
 const ServiceCard = ({ index, title, icon }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Colores dinámicos por servicio
-  const colors = {
-    "Frontend Developer": "#61DAFB",
-    "Microservicios": "#E0234E",
-    "Backend Developer": "#339933",
-    "Creador de contenido": "#8B5CF6"
-  };
+  // Colores dinámicos por índice de servicio (independiente del idioma)
+  const colors = ["#61DAFB", "#E0234E", "#339933", "#8B5CF6"];
 
-  const color = colors[title] || "#915EFF";
+  const color = colors[index] || "#915EFF";
 
   return (
     <motion.div
@@ -37,7 +34,7 @@ const ServiceCard = ({ index, title, icon }) => {
     >
       {/* Glassmorphism Card */}
       <div
-        className="relative w-full rounded-3xl overflow-hidden cursor-pointer"
+        className="relative w-full rounded-3xl overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${color}15, ${color}05)`,
           backdropFilter: "blur(15px)",
@@ -75,10 +72,10 @@ const ServiceCard = ({ index, title, icon }) => {
         />
 
         {/* Content */}
-        <div className="relative z-10 py-5 px-12 flex justify-evenly items-center flex-col h-full">
+        <div className="relative z-10 py-5 px-6 sm:px-8 md:px-12 flex justify-evenly items-center flex-col h-full">
           {/* Icon with floating animation */}
           <motion.div
-            className="mb-6"
+            className="mb-4 sm:mb-6"
             animate={{
               y: isHovered ? [-5, 5, -5] : 0,
             }}
@@ -140,31 +137,31 @@ const ServiceCard = ({ index, title, icon }) => {
 };
 
 const About = () => {
+  const { language } = useLanguage();
+  const t = translations[language].about;
+
   return (
     <>
       <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>Introducción</p>
-        <h2 className={styles.sectionHeadText}>Sobre mí.</h2>
+        <p className={styles.sectionSubText}>{t.subtitle}</p>
+        <h2 className={styles.sectionHeadText}>{t.title}</h2>
       </motion.div>
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
+        className="mt-4 text-secondary text-[15px] sm:text-[17px] max-w-3xl leading-[26px] sm:leading-[30px]"
       >
-        Soy un <span className="text-white font-semibold">ingeniero de software</span> habilidoso con experiencia en{" "}
-        <span className="text-[#3178C6]">TypeScript</span> y{" "}
-        <span className="text-[#F7DF1E]">JavaScript</span>, experiencia en frameworks como{" "}
-        <span className="text-[#61DAFB]">React</span>,{" "}
-        <span className="text-[#339933]">Node.js</span> y{" "}
-        <span className="text-[#E0234E]">Nest.js</span>. Soy un aprendiz rápido y colaboro estrechamente con los
-        clientes para crear soluciones eficientes, escalables y fáciles de usar
-        que resuelvan problemas del mundo real. ¡Trabajemos juntos para dar vida
-        a tus ideas!
+        {t.intro}
       </motion.p>
 
       <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {services.map((service, index) => (
-          <ServiceCard key={service.title} index={index} {...service} />
+          <ServiceCard
+            key={service.title}
+            index={index}
+            title={t.cards[index]?.title || service.title}
+            icon={service.icon}
+          />
         ))}
       </div>
     </>

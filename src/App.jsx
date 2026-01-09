@@ -1,8 +1,10 @@
 import { BrowserRouter } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import { LanguageProvider } from "./context/LanguageContext";
+import { ModalProvider } from "./context/ModalContext";
 
 // Componentes ligeros - carga inmediata
-import { Navbar, Hero, StarsCanvas } from "./components";
+import { Navbar, Hero, StarsCanvas, BackToTop, SocialLinks, EasterEggs } from "./components";
 
 // Componentes pesados - lazy loading
 const About = lazy(() => import("./components/About"));
@@ -22,9 +24,14 @@ const SectionLoader = () => (
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <div className='relative z-0 bg-primary'>
-        <StarsCanvas />
+    <LanguageProvider>
+      <ModalProvider>
+        <BrowserRouter>
+        <div className='relative z-0 bg-primary'>
+          <StarsCanvas />
+          <BackToTop />
+          <SocialLinks />
+          <EasterEggs />
 
         <div>
           <Navbar />
@@ -62,6 +69,8 @@ const App = () => {
         </div>
       </div>
     </BrowserRouter>
+    </ModalProvider>
+    </LanguageProvider>
   );
 }
 

@@ -5,6 +5,8 @@ import { styles } from "../styles";
 import { education } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 
 const EducationCard = ({ degree, institution, period, description, icon, color, index }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -26,7 +28,7 @@ const EducationCard = ({ degree, institution, period, description, icon, color, 
     >
       {/* Glassmorphism Card */}
       <div
-        className="relative w-full rounded-3xl overflow-hidden cursor-pointer"
+        className="relative w-full rounded-3xl overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${color}15, ${color}05)`,
           backdropFilter: "blur(15px)",
@@ -64,7 +66,7 @@ const EducationCard = ({ degree, institution, period, description, icon, color, 
         />
 
         {/* Content */}
-        <div className="relative z-10 py-6 px-8 flex items-center gap-6 h-full">
+        <div className="relative z-10 py-6 px-4 sm:px-6 md:px-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 h-full">
           {/* Icon with floating animation */}
           <motion.div
             className="flex-shrink-0"
@@ -79,7 +81,7 @@ const EducationCard = ({ degree, institution, period, description, icon, color, 
           >
             <div className="relative">
               <div
-                className="w-20 h-20 rounded-2xl flex items-center justify-center"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center"
                 style={{
                   background: `linear-gradient(135deg, ${color}30, ${color}10)`,
                   border: `1px solid ${color}40`,
@@ -88,7 +90,7 @@ const EducationCard = ({ degree, institution, period, description, icon, color, 
                 <img
                   src={icon}
                   alt={degree}
-                  className="w-12 h-12 object-contain transform group-hover:scale-110 transition-transform duration-300"
+                  className="w-10 h-10 sm:w-12 sm:h-12 object-contain transform group-hover:scale-110 transition-transform duration-300"
                   style={{
                     filter: `drop-shadow(0 0 10px ${color}60)`,
                   }}
@@ -105,14 +107,14 @@ const EducationCard = ({ degree, institution, period, description, icon, color, 
           </motion.div>
 
           {/* Text Content */}
-          <div className="flex-1">
+          <div className="flex-1 text-center sm:text-left">
             {/* Period Badge */}
             <motion.div
               className="inline-block mb-2"
               whileHover={{ scale: 1.05 }}
             >
               <span
-                className="px-3 py-1 rounded-full text-xs font-semibold"
+                className="px-2 py-1 sm:px-3 rounded-full text-[10px] sm:text-xs font-semibold"
                 style={{
                   background: `${color}20`,
                   border: `1px solid ${color}40`,
@@ -126,7 +128,7 @@ const EducationCard = ({ degree, institution, period, description, icon, color, 
 
             {/* Degree */}
             <h3
-              className="text-white text-[22px] font-bold mb-1 tracking-wide"
+              className="text-white text-[18px] sm:text-[20px] md:text-[22px] font-bold mb-1 tracking-wide"
               style={{
                 textShadow: `0 0 20px ${color}60`,
               }}
@@ -136,7 +138,7 @@ const EducationCard = ({ degree, institution, period, description, icon, color, 
 
             {/* Institution */}
             <p
-              className="text-[16px] font-semibold mb-3"
+              className="text-[14px] sm:text-[16px] font-semibold mb-3"
               style={{
                 color: color,
                 opacity: 0.9,
@@ -146,7 +148,7 @@ const EducationCard = ({ degree, institution, period, description, icon, color, 
             </p>
 
             {/* Description */}
-            <p className="text-secondary text-[14px] leading-relaxed">
+            <p className="text-secondary text-[13px] sm:text-[14px] leading-relaxed">
               {description}
             </p>
           </div>
@@ -163,27 +165,32 @@ const EducationCard = ({ degree, institution, period, description, icon, color, 
 };
 
 const Education = () => {
+  const { language } = useLanguage();
+  const t = translations[language].education;
+
+  // Combinar datos estáticos (iconos, colores) con traducciones
+  const translatedEducation = t.items.map((edu, index) => ({
+    ...edu,
+    icon: education[index]?.icon,
+    color: education[index]?.color,
+  }));
+
   return (
     <>
       <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>Mi Formación Académica</p>
-        <h2 className={styles.sectionHeadText}>Educación.</h2>
+        <p className={styles.sectionSubText}>{t.subtitle}</p>
+        <h2 className={styles.sectionHeadText}>{t.title}</h2>
       </motion.div>
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px] mb-10"
+        className="mt-4 text-secondary text-[15px] sm:text-[17px] max-w-3xl leading-[26px] sm:leading-[30px] mb-10"
       >
-        Mi formación combina{" "}
-        <span className="text-white font-semibold">educación formal</span> en ingeniería de
-        software con{" "}
-        <span className="text-[#61DAFB] font-semibold">certificaciones especializadas</span>{" "}
-        en las tecnologías más demandadas de la industria. Este enfoque me permite mantenerme
-        actualizado y ofrecer soluciones de vanguardia.
+        {t.description}
       </motion.p>
 
       <div className="mt-12 flex flex-col gap-6">
-        {education.map((edu, index) => (
+        {translatedEducation.map((edu, index) => (
           <EducationCard key={`education-${index}`} index={index} {...edu} />
         ))}
       </div>
