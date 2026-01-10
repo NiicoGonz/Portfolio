@@ -351,7 +351,7 @@ export const translations = {
       items: [
         {
           degree: "Software Engineering",
-          institution: "National University",
+          institution: "University of Quindío",
           period: "2016 - 2020",
           description: "Comprehensive training in software development, system architecture, databases, and agile methodologies.",
         },
