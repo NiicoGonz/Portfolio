@@ -90,8 +90,8 @@ export const translations = {
       items: [
         {
           degree: "Ingeniería de Software",
-          institution: "Universidad Nacional",
-          period: "2016 - 2020",
+          institution: "Universidad del Quindio ",
+          period: "2016 - 2021",
           description: "Formación integral en desarrollo de software, arquitectura de sistemas, bases de datos y metodologías ágiles.",
         },
         {
