@@ -41,16 +41,20 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ duration: 0.3, type: "spring" }}
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-[90%] max-w-2xl max-h-[85vh] overflow-y-auto"
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-[95%] sm:w-[90%] max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto overscroll-contain"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+            }}
           >
             <div
-              className="relative rounded-3xl p-6 sm:p-8 md:p-10"
+              className="relative rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10"
               style={{
                 background: `linear-gradient(135deg, ${technology.color}20, rgba(10, 10, 35, 0.95))`,
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
                 border: `2px solid ${technology.color}60`,
                 boxShadow: `0 20px 60px 0 ${technology.color}40`,
+                minHeight: 'fit-content',
               }}
             >
               {/* Close button */}
@@ -58,7 +62,7 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={onClose}
-                className="absolute top-4 right-4 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center"
+                className="absolute top-2 right-2 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center z-10"
                 style={{
                   background: `${technology.color}30`,
                   border: `1px solid ${technology.color}60`,
@@ -80,7 +84,7 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
               </motion.button>
 
               {/* Header with icon and title */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+              <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-6 md:mb-8 pr-8 sm:pr-0">
                 <motion.div
                   animate={{
                     y: [0, -10, 0],
@@ -94,7 +98,7 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
                   className="flex-shrink-0"
                 >
                   <div
-                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center"
+                    className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center"
                     style={{
                       background: `linear-gradient(135deg, ${technology.color}40, ${technology.color}10)`,
                       border: `2px solid ${technology.color}60`,
@@ -104,7 +108,7 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
                     <img
                       src={technology.icon}
                       alt={technology.name}
-                      className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                      className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain"
                       style={{
                         filter: `drop-shadow(0 0 10px ${technology.color}80)`,
                       }}
@@ -114,7 +118,8 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
 
                 <div className="flex-1 text-center sm:text-left">
                   <h3
-                    className="text-3xl sm:text-4xl font-bold mb-2"
+                    className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 notranslate"
+                    translate="no"
                     style={{
                       color: technology.color,
                       textShadow: `0 0 30px ${technology.color}80`,
@@ -123,7 +128,7 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
                     {technology.name}
                   </h3>
                   <div
-                    className="h-1 w-20 sm:w-32 rounded-full mx-auto sm:mx-0"
+                    className="h-1 w-16 sm:w-20 md:w-32 rounded-full mx-auto sm:mx-0"
                     style={{
                       background: `linear-gradient(90deg, ${technology.color}, transparent)`,
                     }}
@@ -132,15 +137,15 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
               </div>
 
               {/* Description section */}
-              <div className="mb-6 sm:mb-8">
-                <h4 className="text-white text-lg sm:text-xl font-bold mb-3 flex items-center gap-2">
+              <div className="mb-4 sm:mb-6 md:mb-8">
+                <h4 className="text-white text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-3 flex items-center gap-2">
                   <span
-                    className="w-2 h-2 rounded-full"
+                    className="w-2 h-2 rounded-full flex-shrink-0"
                     style={{ background: technology.color }}
                   />
                   {translations[language].skills.whatIs}
                 </h4>
-                <p className="text-secondary text-[14px] sm:text-[15px] leading-relaxed pl-4">
+                <p className="text-secondary text-[13px] sm:text-[14px] md:text-[15px] leading-relaxed pl-4 sm:pl-5">
                   {translations[language].skills.technologies[technology.name]?.description || technology.description}
                 </p>
               </div>
@@ -223,7 +228,8 @@ const SkillCard = ({ technology, index, onClick }) => {
 
           {/* Name */}
           <p
-            className="text-sm font-semibold text-center tracking-wide"
+            className="text-sm font-semibold text-center tracking-wide notranslate"
+            translate="no"
             style={{
               color: technology.color,
               textShadow: `0 0 10px ${technology.color}60`

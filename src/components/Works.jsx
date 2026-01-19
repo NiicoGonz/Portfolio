@@ -114,7 +114,8 @@ const ProjectCard = ({
         <div className="relative z-10 p-4 sm:p-6">
           {/* Title */}
           <h3
-            className="text-white font-bold text-[20px] sm:text-[24px] mb-2 sm:mb-3"
+            className="text-white font-bold text-[20px] sm:text-[24px] mb-2 sm:mb-3 notranslate"
+            translate="no"
             style={{
               textShadow: `0 0 20px ${primaryColor}60`,
             }}
@@ -144,7 +145,8 @@ const ProjectCard = ({
                 <motion.span
                   key={`${name}-${tag.name}`}
                   whileHover={{ scale: 1.1 }}
-                  className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-[12px] font-semibold"
+                  className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-[12px] font-semibold notranslate"
+                  translate="no"
                   style={{
                     background: `${tagColor}20`,
                     color: tagColor,
@@ -237,7 +239,8 @@ const Works = () => {
             transition={{ delay: index * 0.05 }}
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[13px] sm:text-[14px] font-semibold transition-all duration-300"
+            className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[13px] sm:text-[14px] font-semibold transition-all duration-300 notranslate"
+            translate="no"
             style={{
               background:
                 activeFilter === tag
