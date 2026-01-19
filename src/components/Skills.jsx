@@ -41,11 +41,14 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ duration: 0.3, type: "spring" }}
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-[95%] sm:w-[90%] max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto overscroll-contain"
-            style={{
-              WebkitOverflowScrolling: 'touch',
-            }}
+            className="fixed inset-0 flex items-center justify-center z-[101] p-4 sm:p-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2"
           >
+            <div
+              className="w-full max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-y-auto overscroll-contain"
+              style={{
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
             <div
               className="relative rounded-3xl p-4 sm:p-6 md:p-8 lg:p-10"
               style={{
@@ -158,6 +161,7 @@ const TechnologyModal = ({ technology, isOpen, onClose, language = "es" }) => {
                   background: `radial-gradient(circle, ${technology.color}, transparent)`,
                 }}
               />
+            </div>
             </div>
           </motion.div>
         </>
